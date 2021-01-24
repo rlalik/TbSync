@@ -68,7 +68,6 @@ var addressbook = {
       this._targetObj = null;
     }
 
-    
     // Check, if the target exists and return true/false.
     hasTarget() { 
       let target = this._folderData.getFolderProperty("target");
@@ -113,7 +112,7 @@ var addressbook = {
       } catch (e) {}
 
       TbSync.db.clearChangeLog(target);
-      this._folderData.resetFolderProperty("target");        
+      this._folderData.resetFolderProperty("target");
     }
     
     /**
@@ -135,7 +134,7 @@ var addressbook = {
         directory.setStringValue("tbSyncAccountID", "");
       }
       TbSync.db.clearChangeLog(target);
-      this._folderData.resetFolderProperty("target");      
+      this._folderData.resetFolderProperty("target");
     }     
     
     set targetName(newName) {
@@ -739,19 +738,17 @@ var addressbook = {
   
   getDirectoryFromDirectoryUID: function(UID) {
     let directories = MailServices.ab.directories;
-    while (UID && directories.hasMoreElements()) {
-      let directory = directories.getNext();
+    for (const directory of directories) {
       if (directory instanceof Components.interfaces.nsIAbDirectory) {
         if (directory.UID == UID) return directory;
       }
-    }       
+    };
     return null;
   },
   
   getListInfoFromListUID: async function(UID) {
     let directories = MailServices.ab.directories;
-    while (directories.hasMoreElements()) {
-      let directory = directories.getNext();
+    for (const directory of directories) {
       if (directory instanceof Components.interfaces.nsIAbDirectory && !directory.isRemote) {
         let searchList = "(IsMailList,=,TRUE)";
         let foundCards = await TbSync.addressbook.searchDirectory(directory.URI, "(and" + searchList+")");
